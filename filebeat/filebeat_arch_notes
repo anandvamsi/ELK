@@ -1,0 +1,16 @@
+
+Whole idea is to ship the container logs to the elasticsearch 
+
+step1"
+what needs to be done is : create containers with on share  volume where the apps logs needs to be exposed 
+Note: you can use --volumes-from option while createing containers.
+Refe docker-compose notes 
+
+step2:
+Create a another container for the filebeat which again have the access to share path mentioned in the step1
+To execute file beat use the command 
+filebeat -e
+
+Step3:
+configure the filebeat in the container in step2 and mention the IP of logstash and restart the filebeat 
+monitorin the logs of file beat.
