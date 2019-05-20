@@ -1,0 +1,33 @@
+
+##providing authentication to kibana using nginx and htpasswd
+
+1.Install kibana in the server  10.160.0.12 with the port 5601
+2.Install the nginx in the server 10.160.0.3 with port 80
+3.Install http-tools in the nginx server to enable httpasswd commmand
+
+4.Creating htppasswd users
+htpasswd  -c /etc/nginx/.htpasswd_kibana kibana1
+htpasswd  /etc/nginx/.htpasswd_kibana kibana ---no need to user -c 
+
+5.
+Add the below configration to /etc/nginx/nginx.conf
+
+
+ server {
+         server_name kibana.sentrifugo.com;
+        auth_basic "kibana Authentication";
+        error_log /var/log/nginx/kibana_auth_error.log ;
+        access_log /var/log/nginx/kibana_auth_access.log;
+        auth_basic_user_file /etc/nginx/.htpasswd_kibana;
+
+   location / {
+        proxy_pass http://10.160.0.12:5601;
+        }
+
+6.Restart nginx 
+7. Add DNS entry for the kibana.sentrifugo.com for the public ip of nginx or mention the mapping in /etc/hosts file
+
+8.Using the brower http://kibana.sentrifugo.com
+
+
+
