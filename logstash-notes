@@ -1,0 +1,34 @@
+
+##checking the logstash configration
+/opt/logstash/bin/logstash -f /etc/logstash/conf.d/pipeline.conf --configtest
+Configuration OK
+
+##Running logstash
+/opt/logstash/bin/logstash -f /etc/logstash/conf.d/pipeline.conf
+
+
+##multiple inputs for the logstash
+logstash input 
+input {
+  file {
+    path => [
+      "/var/log/app/worker_info.log",
+      "/var/log/app/broker_info.log",
+      "/var/log/app/supervisor.log"
+    ]
+    exclude => "*.gz"
+    type    => "applog"
+    codec   => "json"
+  }
+}
+
+
+input {
+  file {
+    path => "/tmp/*_log"
+  }
+}
+
+
+
+
